@@ -1,8 +1,9 @@
-import { Button, Form, FormControl, FormGroup, FormLabel, Modal, ModalFooter } from "react-bootstrap"
+import { Button, Form, Modal, ModalFooter } from "react-bootstrap"
 import { useForm } from "react-hook-form"
 import { Note } from "../models/note"
-import { NoteInput } from "../network/notes_api"
 import * as NotesApi from "../network/notes_api"
+import { NoteInput } from "../network/notes_api"
+import TextInputField from "./form/TextInputField"
 
 interface AddEditNoteDialogProps {
     noteToEdit?: Note,
@@ -10,7 +11,7 @@ interface AddEditNoteDialogProps {
     onNoteSaved: (note: Note) => void
 }
 
-const AddNoteDialog = ({noteToEdit, onDismiss, onNoteSaved}: AddEditNoteDialogProps) => {
+const AddEditNoteDialog = ({noteToEdit, onDismiss, onNoteSaved}: AddEditNoteDialogProps) => {
 
     const {register, handleSubmit, formState: {errors, isSubmitting}} = useForm<NoteInput>({
         defaultValues: {
@@ -47,7 +48,28 @@ const AddNoteDialog = ({noteToEdit, onDismiss, onNoteSaved}: AddEditNoteDialogPr
 
             <Modal.Body>
                 <Form id="addEditNoteForm" onSubmit={handleSubmit(onSubmit)}>
-                    <Form.Group className="mb-3">
+
+                    <TextInputField
+                        name="title"
+                        label="Title"
+                        type="text"
+                        placeholder="Title"
+                        register={register}
+                        registerOptions={{required: "Required"}}
+                        error={errors.title}
+                    />
+
+                    <TextInputField
+                        name="text"
+                        label="Text"
+                        placeholder="Text"
+                        as="textarea" 
+                        rows={5} 
+                        register={register}
+                    />
+
+
+                    {/* <Form.Group className="mb-3">
                         <FormLabel>Title</FormLabel>
                         <FormControl 
                             type="text" 
@@ -58,7 +80,7 @@ const AddNoteDialog = ({noteToEdit, onDismiss, onNoteSaved}: AddEditNoteDialogPr
                         <Form.Control.Feedback type="invalid">
                             {errors.title?.message}
                         </Form.Control.Feedback>
-                    </Form.Group>
+                    </Form.Group> 
 
                     <FormGroup className="mb-3">
                         <FormLabel>Text</FormLabel>
@@ -68,7 +90,7 @@ const AddNoteDialog = ({noteToEdit, onDismiss, onNoteSaved}: AddEditNoteDialogPr
                             rows={5} 
                             {...register("text")}>
                          </FormControl>
-                    </FormGroup>
+                    </FormGroup>  */}
                 </Form>
             </Modal.Body>
 
@@ -79,4 +101,4 @@ const AddNoteDialog = ({noteToEdit, onDismiss, onNoteSaved}: AddEditNoteDialogPr
     )
 }
 
-export default AddNoteDialog
+export default AddEditNoteDialog
